@@ -1,7 +1,5 @@
-USE flaskdb;
-
 CREATE TABLE users (
-    id INT SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    loaded DEFAULT current_timestamp
+    loaded TIMESTAMP DEFAULT current_timestamp
 );

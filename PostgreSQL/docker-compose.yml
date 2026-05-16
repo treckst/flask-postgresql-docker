@@ -1,0 +1,32 @@
+services:
+  postgres_flask:
+    container_name: postgres_flask
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flaskdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 40s
+    restart: always
+
+  flask_container:
+    build: ../Flask/.
+    container_name: flask_container
+    restart: always
+    depends_on:
+      postgres_flask:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+
+volumes:
+  postgres_data:
