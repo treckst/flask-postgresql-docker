@@ -5,7 +5,6 @@ import pandas as pd
 
 app = Flask(__name__)
 
-
 @contextmanager
 def auto_con():
     connection = psycopg2.connect(
@@ -18,15 +17,18 @@ def auto_con():
         yield connection
     finally:
         connection.close()
+
 @app.route('/', methods=['GET'])
 def hello():
+    
     return "Use /read to see the database\n/insert/<name> for data insertion\n/delete/<name> for data deletion"
+
 @app.route('/read', methods=['GET'])
 def read():
     
     with auto_con() as conn:
         df = pd.read_sql("SELECT id, name, to_char(loaded, 'YYYY-MM-DD HH24:MI:SS') AS loaded FROM users", conn)
-    return df.to_json(orient='records'), 200
+    return df.to_json(), 200
 
 #pandas doesn't work with sql_queries, so
 @app.route('/insert/<name>', methods=['GET', 'POST'])
