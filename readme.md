@@ -1,0 +1,1 @@
+# A lightweight, fully containerized web application built with Python (Flask) and PostgreSQL. This project demonstrates how to orchestrate a Python API and a relational database using Docker Compose, complete with automatic database initialization and health checks.
